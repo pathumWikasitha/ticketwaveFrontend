@@ -3,13 +3,16 @@ export class Event {
   eventName: string;
   ticketPrice: number;
   eventDescription: string;
-  eventDate: Date;
+  eventLocation: string;
+  eventDateTime: string;
 
   constructor() {
     this.eventId = 0;
-    this.eventDate = new Date();
-    this.eventDescription = '';
     this.eventName = '';
     this.ticketPrice = 0;
+    this.eventDescription = '';
+    this.eventLocation = '';
+    this.eventDateTime = '';
   }
+
 }

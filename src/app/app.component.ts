@@ -57,6 +57,7 @@ export class AppComponent {
   onLogout() {
     this.loggedUser = new Customer();
     localStorage.removeItem('ticketWave');
+    this.refreshPage()
   }
 
   openRegister() {
@@ -84,5 +85,9 @@ export class AppComponent {
     if (model != null) {
       model.style.display = 'none';
     }
+  }
+
+  refreshPage(): void {
+    window.location.reload();
   }
 }
