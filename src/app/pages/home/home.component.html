@@ -21,19 +21,23 @@
 
 <div class="title fs-2 mt-2" style="margin-left: 13%">Events</div>
 
-<div class="cards mt-3 d-lg-inline-flex" style="margin-left: 13%">
+<div
+  class="cards mt-3 d-lg-inline-flex"
+  style="margin-left: 13%"
+  *ngFor="let event of events"
+>
   <div class="card" style="width: 18rem">
     <img src="/assets/images/trimana.jpg" class="card-img-top" alt="trimana" />
     <div class="card-body">
-      <h5 class="card-title">Thrimana</h5>
+      <h5 class="card-title">{{ event.eventName }}</h5>
       <p class="card-text fw-light mb-1">
-        <i class="bi bi-calendar-event"></i> Nov 29, 2024 • 06.30 PM IST
+        <i class="bi bi-calendar-event"></i> {{ event.eventDateTime }}
       </p>
       <p class="card-text fw-light mb-1">
-        <i class="bi bi-geo-alt"></i> Nelum Pokuna Indoor Theater
+        <i class="bi bi-geo-alt"></i> {{ event.eventLocation }}
       </p>
       <p class="card-text">
-        <span class="text-primary fw-bold">2,000 LKR </span
+        <span class="text-primary fw-bold">{{ event.ticketPrice }} LKR </span
         ><span class="fw-light">UPWARDS</span>
       </p>
     </div>
