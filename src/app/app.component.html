@@ -20,6 +20,8 @@
           <a class="nav-link" href="javascript:void(0)">Link</a>
         </li>
       </ul>
+
+      @if (loggedUser.email == '') {
       <form class="d-flex">
         <button
           class="btn btn-light me-4"
@@ -32,6 +34,14 @@
           <i class="bi bi-person-circle me-2"></i>Sign in
         </button>
       </form>
+
+      } @else {
+      <form class="d-flex nav-item dropdown">
+        <button class="btn btn-primary" type="button" (click)="onLogout()">
+          <i class="bi bi-person-circle me-2"></i>Logout
+        </button>
+      </form>
+      }
     </div>
   </div>
 </nav>
@@ -107,13 +117,23 @@
         <div class="row">
           <div class="col-12">
             <label>Email</label>
-            <input type="email" class="form-control" required />
+            <input
+              type="email"
+              class="form-control"
+              required
+              [(ngModel)]="loginObj.email"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-12">
             <label>Password</label>
-            <input type="email" class="form-control" required />
+            <input
+              type="email"
+              class="form-control"
+              required
+              [(ngModel)]="loginObj.password"
+            />
           </div>
         </div>
       </div>
@@ -121,7 +141,9 @@
         <button type="button" class="btn btn-danger" (click)="closeLogin()">
           Close
         </button>
-        <button type="button" class="btn btn-success">Login</button>
+        <button type="button" class="btn btn-success" (click)="onLogin()">
+          Login
+        </button>
       </div>
     </div>
   </div>

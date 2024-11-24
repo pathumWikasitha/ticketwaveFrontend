@@ -15,4 +15,8 @@ export class UserService {
       obj
     );
   }
+
+  loginUser(obj: Customer) {
+    return this.http.post('http://localhost:8080/api/v1/customer/login', obj);
+  }
 }

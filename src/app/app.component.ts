@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { Customer } from './model/user';
 import { UserService } from './service/user.service';
@@ -14,9 +14,20 @@ import { UserService } from './service/user.service';
 })
 export class AppComponent {
   title = 'ticketWave';
-
+  router = inject(Router);
   userService = inject(UserService);
+
   registerObj: Customer = new Customer();
+  loginObj: Customer = new Customer();
+
+  loggedUser: Customer = new Customer();
+
+  constructor() {
+    const localData = localStorage.getItem('ticketWave');
+    if (localData != null) {
+      this.loggedUser = JSON.parse(localData);
+    }
+  }
 
   onRegister() {
     this.userService.createNewUser(this.registerObj).subscribe((res: any) => {
@@ -29,14 +40,34 @@ export class AppComponent {
     this.closeRegister();
   }
 
+  onLogin() {
+    this.userService.loginUser(this.loginObj).subscribe((res: any) => {
+      if (res.email != null) {
+        debugger;
+        this.loggedUser = res;
+        localStorage.setItem('ticketWave', JSON.stringify(res));
+        this.closeLogin();
+        alert('Login Success');
+      } else {
+        alert('Invalid email and Password');
+      }
+    });
+  }
+
+  onLogout() {
+    this.loggedUser = new Customer();
+    localStorage.removeItem('ticketWave');
+  }
+
   openRegister() {
     const model = document.getElementById('registerModel');
     if (model != null) {
       model.style.display = 'block';
     }
   }
+
   openLogin() {
-    const model = document.getElementById('logineModel');
+    const model = document.getElementById('loginModel');
     if (model != null) {
       model.style.display = 'block';
     }
@@ -49,7 +80,7 @@ export class AppComponent {
     }
   }
   closeLogin() {
-    const model = document.getElementById('logineModel');
+    const model = document.getElementById('loginModel');
     if (model != null) {
       model.style.display = 'none';
     }
