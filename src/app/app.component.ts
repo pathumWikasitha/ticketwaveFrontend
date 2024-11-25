@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterOutlet } from '@angular/router';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { Customer } from './model/user';
 import { UserService } from './service/user.service';
@@ -8,7 +8,7 @@ import { UserService } from './service/user.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, NgOptimizedImage],
+  imports: [RouterOutlet, FormsModule, NgOptimizedImage, RouterLink],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -41,16 +41,22 @@ export class AppComponent {
   }
 
   onLogin() {
-    this.userService.loginUser(this.loginObj).subscribe((res: any) => {
-      if (res.email != null) {
-        debugger;
-        this.loggedUser = res;
-        localStorage.setItem('ticketWave', JSON.stringify(res));
-        this.closeLogin();
-        alert('Login Success');
-      } else {
-        alert('Invalid email and Password');
-      }
+    this.userService.loginUser(this.loginObj).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          localStorage.setItem('ticketWave', JSON.stringify(response.body));
+          this.loggedUser = response.body;
+          this.closeLogin();
+          alert('Login Success');
+        }
+      },
+      error: (error) => {
+        if (error.status === 400) {
+          alert('Invalid email and password');
+        } else {
+          alert(`Login failed. Error code: ${error.status}`);
+        }
+      },
     });
   }
 

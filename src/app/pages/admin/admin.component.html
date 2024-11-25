@@ -1,1 +1,123 @@
-<p>admin works!</p>
+<div class="container mt-4">
+  <h2 class="text-center my-4">Admin Configuration</h2>
+
+  <div class="container mt-4 w-75">
+    <div class="bg-dark align-content-center rounded border border-top-0 border-primary">
+      <div class=" mt-2 d-flex text-center justify-content-evenly">
+        <h2 class="text-white">1</h2>
+        <h2 class="text-white">=</h2>
+        <h2 class="text-white">1000</h2>
+      </div>
+      <div class="d-flex mt-2 justify-content-around">
+        <h6 class="text-white">Second</h6>
+        <h6 class="text-white">Milliseconds</h6>
+      </div>
+      <div class="mt-2 text-white">
+        <ul>
+          <li>
+            <h6 class="fw-light">This is a <span class="fw-bold">rate limiter</span> that controls how fast tickets can
+              be added to the system and how fast customers can purchase tickets from the system.</h6>
+          </li>
+          <li><h6 class="fw-light">It forces a <span class="fw-bold">pause between each ticket addition and purchasing.</span></h6></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <form [formGroup]="configForm">
+      <!-- Total Tickets -->
+      <div class="form-group mb-3">
+        <label for="totalTickets">Total Tickets</label>
+        <input
+          type="number"
+          class="form-control"
+          id="totalTickets"
+          formControlName="totalTickets"
+          [ngClass]="{
+          'is-invalid': configForm.get('totalTickets')?.invalid && configForm.get('totalTickets')?.touched
+        }"
+        />
+        <div class="invalid-feedback">
+          Total Tickets is required and must be greater than 0.
+        </div>
+      </div>
+
+      <!-- Max Capacity -->
+      <div class="form-group mb-3">
+        <label for="maxTicketCapacity">Max Ticket Capacity</label>
+        <input
+          type="number"
+          class="form-control"
+          id="maxTicketCapacity"
+          formControlName="maxTicketCapacity"
+          [ngClass]="{
+          'is-invalid': configForm.get('maxTicketCapacity')?.invalid && configForm.get('maxTicketCapacity')?.touched
+        }"
+        />
+        <div class="invalid-feedback">
+          Max Capacity is required and must be greater than 0.
+        </div>
+      </div>
+
+      <!-- Customer Retrieval Rate -->
+      <div class="form-group mb-3">
+        <label for="customerRetrievalRate">Customer Retrieval Rate (Milliseconds)</label>
+        <input
+          type="number"
+          class="form-control"
+          id="customerRetrievalRate"
+          formControlName="customerRetrievalRate"
+          [ngClass]="{
+          'is-invalid': configForm.get('customerRetrievalRate')?.invalid && configForm.get('customerRetrievalRate')?.touched
+        }"
+        />
+        <div class="invalid-feedback">
+          Customer Retrieval Rate is required and must be greater than 0.
+        </div>
+      </div>
+
+      <!-- Vendor Release Rate -->
+      <div class="form-group mb-3">
+        <label for="ticketReleaseRate">Vendor Release Rate (Milliseconds)</label>
+        <input
+          type="number"
+          class="form-control"
+          id="ticketReleaseRate"
+          formControlName="ticketReleaseRate"
+          [ngClass]="{
+          'is-invalid': configForm.get('ticketReleaseRate')?.invalid && configForm.get('ticketReleaseRate')?.touched
+        }"
+        />
+        <div class="invalid-feedback">
+          Vendor Release Rate is required and must be greater than 0.
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex justify-content-between mt-4">
+        <button type="button" class="btn btn-primary" (click)="saveConfiguration()">Save</button>
+        <button type="button" class="btn btn-warning" (click)="updateConfiguration()">Update</button>
+        <button type="button" class="btn btn-info" (click)="loadConfiguration()">Load</button>
+      </div>
+    </form>
+
+    <!-- Start/Stop System -->
+    <div class="mt-4 text-center">
+      <button
+        class="btn btn-success btn-lg me-2"
+        [disabled]="(!isConfigLoaded || systemRunning)"
+        (click)="startSystem()"
+      >
+        Start System
+      </button>
+      <button
+        class="btn btn-danger btn-lg ms-2"
+        [disabled]="!systemRunning"
+        (click)="stopSystem()"
+      >
+        Stop System
+      </button>
+    </div>
+  </div>
+</div>

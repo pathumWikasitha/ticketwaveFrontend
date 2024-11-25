@@ -1,41 +1,36 @@
-export class Customer {
+export class User {
+  id: number;
   username: string;
   email: string;
   password: string;
   role: string;
 
-  constructor() {
-    this.username = '';
-    this.email = '';
-    this.password = '';
-    this.role = 'CUSTOMER';
+  constructor(role: string) {
+    this.id = 0;
+    this.username = "";
+    this.email = "";
+    this.password = "";
+    this.role = role;
   }
 }
 
-export class Vendor {
-  username: string;
-  email: string;
-  password: string;
-  role: string;
+export class Vendor extends User{
 
   constructor() {
-    this.username = '';
-    this.email = '';
-    this.password = '';
-    this.role = 'VENDOR';
+    super("VENDOR");
   }
 }
 
-export class Admin {
-  username: string;
-  email: string;
-  password: string;
-  role: string;
+export class Admin extends User{
 
   constructor() {
-    this.username = '';
-    this.email = '';
-    this.password = '';
-    this.role = 'ADMIN';
+    super("ADMIN");
+  }
+}
+
+export class Customer extends User{
+
+  constructor() {
+    super("CUSTOMER");
   }
 }

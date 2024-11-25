@@ -1,0 +1,28 @@
+/* admin-config.component.css */
+.container {
+  margin-top: 50px;
+}
+
+.card {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.card-body {
+  background-color: #f8f9fa;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #343a40;
+}
+
+button {
+  width: 150px;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
