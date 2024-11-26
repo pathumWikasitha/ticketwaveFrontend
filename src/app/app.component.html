@@ -1,149 +1,175 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-white">
   <div class="container">
-    <a class="navbar-brand" href="javascript:void(0)" routerLink="/home">
+    <a class="navbar-brand" routerLink="/home">
       <img
         ngSrc="/assets/images/logo.png"
         alt="logo"
         style="scale: 0.6"
         height="57"
         width="436"
-    /></a>
+      />
+    </a>
     <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">Link</a>
-        </li>
-      </ul>
-
-      @if (loggedUser.email == '') {
-      <form class="d-flex">
-        <button
-          class="btn btn-light me-4"
-          type="button"
-          (click)="openRegister()"
-        >
-          Register
-        </button>
-        <button class="btn btn-primary" type="button" (click)="openLogin()">
-          <i class="bi bi-person-circle me-2"></i>Sign in
-        </button>
-      </form>
-
-      } @else {
-      <form class="d-flex nav-item dropdown">
-        <button class="btn btn-primary" type="button" (click)="onLogout()">
-          <i class="bi bi-person-circle me-2"></i>Logout
-        </button>
-      </form>
-      }
+      <div class="ms-auto">
+        @if (loggedUser.email == '') {
+          <form class="d-flex">
+            <button
+              class="btn btn-light me-2"
+              type="button"
+              (click)="openRegister()"
+            >
+              Register
+            </button>
+            <button class="btn btn-primary" type="button" (click)="openLogin()">
+              <i class="bi bi-person-circle me-2"></i>Sign in
+            </button>
+          </form>
+        } @else {
+          <form class="d-flex">
+            <button class="btn btn-primary" type="button" (click)="onLogout()">
+              <i class="bi bi-person-circle me-2"></i>Logout
+            </button>
+          </form>
+        }
+      </div>
     </div>
   </div>
 </nav>
 
+
 <router-outlet></router-outlet>
 
-<div class="modal" id="registerModel">
+<!-- Register Modal -->
+<div
+  id="registerModel"
+  class="modal"
+  tabindex="-1"
+  aria-labelledby="registerModalLabel"
+  aria-hidden="true"
+  style="display: none"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Register</h4>
-        <button
-          type="button"
-          class="btn-close"
-          (click)="closeRegister()"
-        ></button>
+        <h5 class="modal-title" id="registerModalLabel">Sign Up</h5>
+        <button type="button" class="btn-close" (click)="closeRegister()"></button>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col-12">
-            <label>Name</label>
+        <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" novalidate>
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
             <input
               type="text"
-              [(ngModel)]="registerObj.username"
+              id="name"
               class="form-control"
+              [(ngModel)]="registerObj.username"
+              name="name"
               required
             />
+            <div
+              class="text-danger"
+              *ngIf="registerForm.submitted && registerForm.controls['name']?.invalid"
+            >
+              Name is required.
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <label>Email</label>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
             <input
               type="email"
-              [(ngModel)]="registerObj.email"
+              id="email"
               class="form-control"
+              [(ngModel)]="registerObj.email"
+              name="email"
               required
+              email
             />
+            <div
+              class="text-danger"
+              *ngIf="registerForm.submitted && registerForm.controls['email']?.invalid"
+            >
+              Valid email is required.
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <label>Password</label>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
             <input
               type="password"
-              [(ngModel)]="registerObj.password"
+              id="password"
               class="form-control"
+              [(ngModel)]="registerObj.password"
+              name="password"
               required
+              minlength="8"
             />
+            <div
+              class="text-danger"
+              *ngIf="registerForm.submitted && registerForm.controls['password']?.invalid"
+            >
+              Password must be at least 8 characters long.
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="closeRegister()">
-          Close
-        </button>
-        <button type="button" class="btn btn-success" (click)="onRegister()">
-          Register
-        </button>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </form>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal" id="loginModel">
+<!-- Login Modal -->
+<div
+  id="loginModel"
+  class="modal"
+  tabindex="-1"
+  aria-labelledby="loginModalLabel"
+  aria-hidden="true"
+  style="display: none"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Login</h4>
+        <h5 class="modal-title" id="loginModalLabel">Login</h5>
         <button type="button" class="btn-close" (click)="closeLogin()"></button>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col-12">
-            <label>Email</label>
+        <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" novalidate>
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Email address</label>
             <input
               type="email"
+              id="loginEmail"
               class="form-control"
-              required
               [(ngModel)]="loginObj.email"
-            />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <label>Password</label>
-            <input
-              type="email"
-              class="form-control"
+              name="email"
               required
-              [(ngModel)]="loginObj.password"
+              email
             />
+            <div
+              class="text-danger"
+              *ngIf="loginForm.submitted && loginForm.controls['email']?.invalid"
+            >
+              Valid email is required.
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="closeLogin()">
-          Close
-        </button>
-        <button type="button" class="btn btn-success" (click)="onLogin()">
-          Login
-        </button>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label">Password</label>
+            <input
+              type="password"
+              id="loginPassword"
+              class="form-control"
+              [(ngModel)]="loginObj.password"
+              name="password"
+              required
+            />
+            <div
+              class="text-danger"
+              *ngIf="loginForm.submitted && loginForm.controls['password']?.invalid"
+            >
+              Password is required.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
       </div>
     </div>
   </div>

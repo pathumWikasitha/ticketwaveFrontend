@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
-import { NgOptimizedImage } from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 import { Customer } from './model/user';
 import { UserService } from './service/user.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, NgOptimizedImage, RouterLink],
+  imports: [RouterOutlet, FormsModule, NgOptimizedImage, RouterLink, NgIf],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -29,18 +29,28 @@ export class AppComponent {
     }
   }
 
-  onRegister() {
-    this.userService.createNewUser(this.registerObj).subscribe((res: any) => {
-      if (res == true) {
-        alert('User Created Success');
-      } else {
-        alert('Register Failed');
-      }
-    });
-    this.closeRegister();
+  onRegister(registerForm: NgForm) {
+    if (this.registerValidated()){
+      this.userService.createNewUser(this.registerObj).subscribe((res: any) => {
+        if (res == true) {
+          alert('Register successfully!');
+        } else {
+          alert('Register Failed');
+        }
+      });
+      this.closeRegister();
+      registerForm.resetForm();
+    }else {
+      alert('Please fill all fields correctly.');
+    }
+
+  }
+  registerValidated():boolean {
+    return this.registerObj.username.trim().length >= 3 && this.registerObj.password.trim().length >= 8 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.registerObj.email);
   }
 
-  onLogin() {
+
+  onLogin(loginForm: NgForm) {
     this.userService.loginUser(this.loginObj).subscribe({
       next: (response) => {
         if (response.status === 200) {
@@ -48,6 +58,7 @@ export class AppComponent {
           this.loggedUser = response.body;
           this.closeLogin();
           alert('Login Success');
+          loginForm.resetForm();
         }
       },
       error: (error) => {
@@ -63,7 +74,6 @@ export class AppComponent {
   onLogout() {
     this.loggedUser = new Customer();
     localStorage.removeItem('ticketWave');
-    this.refreshPage()
   }
 
   openRegister() {
@@ -93,7 +103,4 @@ export class AppComponent {
     }
   }
 
-  refreshPage(): void {
-    window.location.reload();
-  }
 }

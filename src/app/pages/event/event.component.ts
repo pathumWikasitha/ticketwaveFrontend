@@ -1,9 +1,9 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {EventService} from '../../service/event.service';
 import {Event} from '../../model/event';
-import { CommonModule } from '@angular/common';
 import {CustomerService} from '../../service/customer.service';
 import {User} from '../../model/user';
+import {AppComponent} from '../../app.component';
 
 @Component({
   selector: 'app-event',
@@ -15,6 +15,7 @@ import {User} from '../../model/user';
 export class EventComponent implements OnInit {
   eventService = inject(EventService);
   customerService = inject(CustomerService);
+  appComponent = inject(AppComponent);
 
   events: Event[] = [];
   ticketCount: number = 1;
@@ -65,7 +66,7 @@ export class EventComponent implements OnInit {
         alert('Invalid user data. Please log in as a customer.');
       }
     } else {
-      alert('Please log in to continue.');
+      this.appComponent.openLogin();
     }
 
 
