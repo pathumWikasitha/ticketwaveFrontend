@@ -96,9 +96,9 @@
 
       <!-- Action Buttons -->
       <div class="d-flex justify-content-between mt-4">
-        <button type="button" class="btn btn-primary" (click)="saveConfiguration()">Save</button>
-        <button type="button" class="btn btn-warning" (click)="updateConfiguration()">Update</button>
-        <button type="button" class="btn btn-info" (click)="loadConfiguration()">Load</button>
+        <button type="button" class="btn btn-primary" (click)="saveConfiguration()" [hidden]="isConfigLoaded">Save</button>
+        <button type="button" class="btn btn-warning" (click)="updateConfiguration()" [hidden]="!isConfigLoaded">Update</button>
+        <button type="button" class="btn btn-info" (click)="loadConfiguration()" [hidden]="isConfigLoaded">Load</button>
       </div>
     </form>
 
@@ -106,14 +106,14 @@
     <div class="mt-4 text-center">
       <button
         class="btn btn-success btn-lg me-2"
-        [disabled]="(!isConfigLoaded || systemRunning)"
+        [hidden]="(!isConfigLoaded || systemRunning)"
         (click)="startSystem()"
       >
         Start System
       </button>
       <button
         class="btn btn-danger btn-lg ms-2"
-        [disabled]="!systemRunning"
+        [hidden]="!systemRunning"
         (click)="stopSystem()"
       >
         Stop System

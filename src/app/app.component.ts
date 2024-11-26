@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {NgIf, NgOptimizedImage} from '@angular/common';
-import { Customer } from './model/user';
+import {Customer, User} from './model/user';
 import { UserService } from './service/user.service';
 
 @Component({
@@ -18,9 +18,9 @@ export class AppComponent {
   userService = inject(UserService);
 
   registerObj: Customer = new Customer();
-  loginObj: Customer = new Customer();
+  loginObj: User = new User('');
 
-  loggedUser: Customer = new Customer();
+  loggedUser: User = new User('');
 
   constructor() {
     const localData = localStorage.getItem('ticketWave');
@@ -54,11 +54,18 @@ export class AppComponent {
     this.userService.loginUser(this.loginObj).subscribe({
       next: (response) => {
         if (response.status === 200) {
+          debugger;
           localStorage.setItem('ticketWave', JSON.stringify(response.body));
           this.loggedUser = response.body;
           this.closeLogin();
           alert('Login Success');
           loginForm.resetForm();
+          if (this.loggedUser.role === 'ADMIN') {
+            this.router.navigate(['/admin']);
+          }
+          if (this.loggedUser.role === 'Vendor') {
+            this.router.navigate(['/vendor']);
+          }
         }
       },
       error: (error) => {

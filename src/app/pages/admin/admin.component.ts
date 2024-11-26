@@ -1,7 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AdminService} from '../../service/admin.service';
 import {NgClass} from '@angular/common';
+import {Configuration} from '../../model/configuration';
 
 @Component({
   selector: 'app-admin',
@@ -10,7 +11,7 @@ import {NgClass} from '@angular/common';
   standalone: true,
   styleUrl: './admin.component.css',
 })
-export class AdminComponent{
+export class AdminComponent implements OnInit{
   configForm: FormGroup; // Reactive Form
   systemRunning = false; // For controlling the "Start System" button
   isConfigLoaded = false; // Enables "Start System" only after loading a configuration
@@ -30,13 +31,16 @@ export class AdminComponent{
 
   // Save configuration
   saveConfiguration(): void {
+    debugger;
     if (this.configForm.invalid) {
       alert('All fields are required and must be greater than 0.');
       return;
     }
-    this.configService.saveConfiguration(this.configForm.value).subscribe(() => {
-      alert('Configuration saved successfully!');
-      this.isConfigLoaded = true;
+    this.configService.saveConfiguration(this.configForm.value).subscribe((res) => {
+      if (res != null){
+        alert('Configuration saved successfully!');
+        this.isConfigLoaded = true;
+      }
     });
   }
 
@@ -53,8 +57,9 @@ export class AdminComponent{
 
   // Load configuration from the server
   loadConfiguration(): void {
-    this.configService.getConfigurations().subscribe((res) => {
-      if (res) {
+    this.configService.getConfigurations().subscribe((res:Configuration) => {
+      if (res != null) {
+        localStorage.setItem('configuration', JSON.stringify(res));
         this.configForm.patchValue(res); // Populate the form with the configuration
         this.isConfigLoaded = true;
         alert('Configuration loaded successfully!');
@@ -69,7 +74,6 @@ export class AdminComponent{
     if (this.isConfigLoaded) {
       this.configService.startSystem().subscribe({
         next: (response: string) => {
-          console.log(response); // Should log: "System started..."
           if (response.includes('System started')) {
             this.systemRunning = true;
             alert('System Started!');
@@ -78,8 +82,7 @@ export class AdminComponent{
           }
         },
         error: (err) => {
-          console.error('Error starting system:', err);
-          alert('Failed to start the system.');
+          alert('Failed to start the system.' +err);
         }
       });
     } else {
@@ -89,7 +92,31 @@ export class AdminComponent{
 
   // Stop the system
   stopSystem(): void {
-    this.systemRunning = false;
-    alert('System Stopped!');
+    this.configService.stopSystem().subscribe({
+      next: (response: string) => {
+        if (response.includes('System stopped')) {
+          this.systemRunning = false;
+          this.isConfigLoaded = false;
+          this.configForm.reset();
+          localStorage.removeItem('configuration');
+          alert('System Stopped!');
+        }else {
+          alert('Unexpected response: ' + response);
+        }
+      },
+      error: (err) => {
+        alert("Failed to stop the system." +err);
+      }
+    });
   }
+
+  ngOnInit(): void {
+    const storedConfig = localStorage.getItem('configuration');
+    if (storedConfig) {
+      const config: Configuration = JSON.parse(storedConfig);
+      this.configForm.patchValue(config);
+      this.isConfigLoaded = true;
+    }
+  }
+
 }

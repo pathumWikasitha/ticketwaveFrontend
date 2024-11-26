@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Configuration} from '../model/configuration';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,17 +12,20 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
   // Get configuration
-  getConfigurations(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl+'/getConfiguration');
+  getConfigurations(): Observable<Configuration> {
+    return this.http.get<Configuration>(this.apiUrl+'/getConfiguration');
   }
 
   // Save a new configuration
   saveConfiguration(config: any): Observable<any> {
-    return this.http.post(this.apiUrl+'/saveConfiguration', config);
+    return this.http.post(this.apiUrl+'/saveConfiguration', config,{ responseType: 'text'});
   }
 
-  startSystem() {
+  startSystem():Observable<string> {
     return this.http.post('http://localhost:8080/api/v1/admin/start', {}, { responseType: 'text' });
+  }
+  stopSystem(): Observable<string> {
+    return this.http.post('http://localhost:8080/api/v1/admin/stop', {}, { responseType: 'text' });
   }
 
   //Update an existing configuration

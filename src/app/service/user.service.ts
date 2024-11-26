@@ -18,7 +18,7 @@ export class UserService {
   }
 
   loginUser(obj: Customer): Observable<HttpResponse<any>> {
-    return this.http.post('http://localhost:8080/api/v1/customer/login', obj, {
+    return this.http.post('http://localhost:8080/api/v1/user/login', obj, {
       observe: 'response', // Include the full HTTP response
     });
   }
