@@ -19,7 +19,7 @@ export const routes: Routes = [
     component: AdminComponent,
   },
   {
-    path: 'event',
+    path: 'event/:id',
     component: EventComponent,
   },
   {

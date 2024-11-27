@@ -8,9 +8,9 @@
     style="width: 25%; height: 130%; right: 10%; top: 50%"
   >
     <img
-      src="/assets/images/trimana.jpg"
+      src="{{event.imageUrl}}"
       class="img-fluid rounded-3"
-      alt="trimana"
+      alt="{{event.eventName}}"
       style="max-height: 100%; object-fit: cover"
     />
     <div
@@ -43,14 +43,14 @@
     class="container text-white position-absolute"
     style="left: 10%; bottom: 10%; width: 80%"
   >
-    <h2>{{ events[0].eventName }}</h2>
+    <h2>{{ event.eventName }}</h2>
     <h6>
       <span>
         <i class="bi bi-calendar-event me-2"></i>
-        {{ events[0].eventDateTime }}
+        {{ event.eventDateTime }}
       </span>
       <span class="ms-4">
-        <i class="bi bi-geo-alt mx-2"></i>{{ events[0].eventLocation }}
+        <i class="bi bi-geo-alt mx-2"></i>{{ event.eventLocation }}
       </span>
     </h6>
   </div>
@@ -59,8 +59,8 @@
 <!-- More Info Section -->
 <div class="container mt-4" style="max-width: 80%">
   <h4>More info</h4>
-  <h6 class="text-black-50">{{ events[0].eventDescription }}</h6>
-  <h4 class="mt-4">Thrimana - ත්‍රිමාණ</h4>
+  <h6 class="text-black-50">{{ event.eventDescription }}</h6>
+  <h4 class="mt-4">{{ event.eventName }}</h4>
   <h4 class="mt-5">Ticket Policy</h4>
   <div class="text-black-50">
     <h6>

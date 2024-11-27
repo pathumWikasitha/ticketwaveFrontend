@@ -5,6 +5,7 @@ export class Event {
   eventDescription: string;
   eventLocation: string;
   eventDateTime: string;
+  imageUrl: string;
 
   constructor() {
     this.eventId = 0;
@@ -13,6 +14,7 @@ export class Event {
     this.eventDescription = '';
     this.eventLocation = '';
     this.eventDateTime = '';
+    this.imageUrl = '';
   }
 
 }

@@ -25,11 +25,26 @@
             </button>
           </form>
         } @else {
-          <form class="d-flex">
-            <button class="btn btn-primary" type="button" (click)="onLogout()">
-              <i class="bi bi-person-circle me-2"></i>Logout
-            </button>
-          </form>
+          <div class="flex-shrink-0 dropdown">
+            <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              <h4 class="text-dark dropdown-toggle text-capitalize"><i
+                class="bi bi-person-circle me-2 fs-2"> </i>{{ loggedUser.username }}</h4>
+            </a>
+            <ul class="dropdown-menu text-small shadow" style="">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+          </div>
+
+          <!--          <form class="d-flex">-->
+            <!--            <button class="btn btn-primary" type="button" (click)="onLogout()">-->
+            <!--              <i class="bi bi-person-circle me-2"></i>Logout-->
+            <!--            </button>-->
+            <!--          </form>-->
         }
       </div>
     </div>
@@ -173,4 +188,31 @@
       </div>
     </div>
   </div>
+</div>
+
+
+<!-- Footer -->
+<div class="container-fluid bottom-0 bg-dark">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top"
+          style="margin-left: 3%; margin-right: 2%">
+    <div class="col-md-4 d-flex align-items-center">
+      <a href="/" class="mb-3 me-2 mb-md-0 text-white text-decoration-none lh-1">
+        <img
+          ngSrc="/assets/images/logo-white.png"
+          alt="logo"
+          style="scale: 0.6"
+          height="47"
+          width="424"
+        />
+      </a>
+    </div>
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex fs-4">
+      <li class="ms-3"><a class="text-white" href="#"><i class="bi bi-twitter-x"></i></a></li>
+      <li class="ms-3"><a class="text-white" href="#"><i class="bi bi-instagram"></i></a></li>
+      <li class="ms-3"><a class="text-white" href="#"><i class="bi bi-facebook"></i></a></li>
+    </ul>
+    <h6 class="fw-light mt-2 text-white">© 2024 TicketWave, Inc</h6>
+  </footer>
+
 </div>

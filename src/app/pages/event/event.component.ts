@@ -4,6 +4,7 @@ import {Event} from '../../model/event';
 import {CustomerService} from '../../service/customer.service';
 import {User} from '../../model/user';
 import {AppComponent} from '../../app.component';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-event',
@@ -16,18 +17,22 @@ export class EventComponent implements OnInit {
   eventService = inject(EventService);
   customerService = inject(CustomerService);
   appComponent = inject(AppComponent);
+  activatedRoute = inject(ActivatedRoute);
 
-  events: Event[] = [];
+  event!: Event;
   ticketCount: number = 1;
+  eventId!: number;  // Declare eventId
 
   ngOnInit(): void {
+    debugger;
+    this.eventId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.showEvent();
   }
 
   showEvent() {
-    this.eventService.getEvent().subscribe((res: any) => {
+    this.eventService.getEventById(this.eventId).subscribe((res: any) => {
       if (res != null) {
-        this.events = res;
+        this.event = res;
       }
     });
   }

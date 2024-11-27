@@ -27,7 +27,7 @@
   *ngFor="let event of events"
 >
   <div class="card" style="width: 18rem">
-    <img src="/assets/images/trimana.jpg" class="card-img-top" alt="trimana" />
+    <img src="{{event.imageUrl}}" class="card-img-top" alt="{{event.eventName}}" />
     <div class="card-body">
       <h5 class="card-title">{{ event.eventName }}</h5>
       <p class="card-text fw-light mb-1">
@@ -41,6 +41,6 @@
         ><span class="fw-light">UPWARDS</span>
       </p>
     </div>
-    <a routerLink="/event" class="btn btn-primary mx-0">Buy Tickets</a>
+    <a [routerLink]="['/event', event.eventId]" class="btn btn-primary mx-0">Buy Tickets</a>
   </div>
 </div>

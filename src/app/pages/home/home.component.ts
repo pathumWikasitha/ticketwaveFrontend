@@ -3,7 +3,7 @@ import { EventService } from '../../service/event.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Customer } from '../../model/user';
-import { AppComponent } from '../../app.component';
+
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,6 @@ import { AppComponent } from '../../app.component';
 export class HomeComponent implements OnInit {
   eventService = inject(EventService);
   events: any[] = [];
-  appComponent = inject(AppComponent);
 
   loggedUser = new Customer();
 
@@ -30,7 +29,7 @@ export class HomeComponent implements OnInit {
   }
 
   getEvents() {
-    this.eventService.getEvent().subscribe((res: any) => {
+    this.eventService.getEvents().subscribe((res: any) => {
       this.events = res;
     });
   }
