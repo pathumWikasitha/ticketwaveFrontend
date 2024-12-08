@@ -26,25 +26,19 @@
           </form>
         } @else {
           <div class="flex-shrink-0 dropdown">
-            <a href="#" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown"
+            <a routerLink="/profile" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown"
                aria-expanded="false">
               <h4 class="text-dark dropdown-toggle text-capitalize"><i
                 class="bi bi-person-circle me-2 fs-2"> </i>{{ loggedUser.username }}</h4>
             </a>
             <ul class="dropdown-menu text-small shadow" style="">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="#">Sign out</a></li>
+              <li><a class="dropdown-item" (click)="onLogout()">Sign out</a></li>
             </ul>
           </div>
-
-          <!--          <form class="d-flex">-->
-            <!--            <button class="btn btn-primary" type="button" (click)="onLogout()">-->
-            <!--              <i class="bi bi-person-circle me-2"></i>Logout-->
-            <!--            </button>-->
-            <!--          </form>-->
         }
       </div>
     </div>
@@ -192,7 +186,7 @@
 
 
 <!-- Footer -->
-<div class="container-fluid bottom-0 bg-dark">
+<div class="container-fluid bottom-0 bg-dark position-relative">
   <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top"
           style="margin-left: 3%; margin-right: 2%">
     <div class="col-md-4 d-block">

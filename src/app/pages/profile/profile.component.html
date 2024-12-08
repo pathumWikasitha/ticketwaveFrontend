@@ -1,0 +1,75 @@
+<!--<div class="container mt-5">-->
+<!--  &lt;!&ndash; Profile Section &ndash;&gt;-->
+<!--  <div class="card mb-4">-->
+<!--    <div class="card-header bg-primary text-white">-->
+<!--      <h4>Profile Information</h4>-->
+<!--    </div>-->
+<!--    <div class="card-body">-->
+<!--      <form>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="userId" class="form-label">ID</label>-->
+<!--          <input-->
+<!--            type="text"-->
+<!--            class="form-control"-->
+<!--            id="userId"-->
+<!--            placeholder="User ID"-->
+<!--            value="{{ id }}"-->
+<!--            readonly-->
+<!--          />-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="username" class="form-label">Username</label>-->
+<!--          <input-->
+<!--            type="text"-->
+<!--            class="form-control"-->
+<!--            id="username"-->
+<!--            placeholder="Enter username"-->
+<!--            value="{{ username }}"-->
+<!--          />-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="password" class="form-label">Password</label>-->
+<!--          <input-->
+<!--            type="password"-->
+<!--            class="form-control"-->
+<!--            id="password"-->
+<!--            placeholder="Enter password"-->
+<!--            value="{{ password }}"-->
+<!--          />-->
+<!--        </div>-->
+<!--        <div class="mb-3">-->
+<!--          <label for="email" class="form-label">Email</label>-->
+<!--          <input-->
+<!--            type="email"-->
+<!--            class="form-control"-->
+<!--            id="email"-->
+<!--            placeholder="Enter email"-->
+<!--            value="{{ email }}"-->
+<!--          />-->
+<!--        </div>-->
+<!--        <button type="button" class="btn btn-success">Update</button>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  &lt;!&ndash; Purchased Tickets Section &ndash;&gt;-->
+<!--  <div class="card">-->
+<!--    <div class="card-header bg-secondary text-white">-->
+<!--      <h4>Purchased Tickets</h4>-->
+<!--    </div>-->
+<!--    <div class="card-body">-->
+<!--      <div *ngIf="purchasedTickets && purchasedTickets.length > 0; else noTickets">-->
+<!--        <ul class="list-group">-->
+<!--          <li class="list-group-item" *ngFor="let ticket of purchasedTickets">-->
+<!--            <strong>Event:</strong> {{ ticket.eventName }} <br />-->
+<!--            <strong>Date:</strong> {{ ticket.eventDateTime }} <br />-->
+<!--            <strong>Price:</strong> {{ ticket.ticketPrice }} LKR-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--      <ng-template #noTickets>-->
+<!--        <p class="text-muted">No purchased tickets available.</p>-->
+<!--      </ng-template>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

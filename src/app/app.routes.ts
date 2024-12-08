@@ -3,6 +3,7 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { HomeComponent } from './pages/home/home.component';
 import { EventComponent } from './pages/event/event.component';
 import {VendorComponent} from './pages/vendor/vendor.component';
+import {ProfileComponent} from './pages/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: 'vendor',
     component: VendorComponent
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
   }
 ];

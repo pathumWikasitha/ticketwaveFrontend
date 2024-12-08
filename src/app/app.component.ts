@@ -79,8 +79,8 @@ export class AppComponent {
   }
 
   onLogout() {
-    this.loggedUser = new Customer();
-    localStorage.removeItem('ticketWave');
+    this.loggedUser = new User('');
+    this.router.navigate(['/home']).then(r => localStorage.removeItem('ticketWave'));
   }
 
   openRegister() {

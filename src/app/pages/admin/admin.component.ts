@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {AdminService} from '../../service/admin.service';
 import {NgClass} from '@angular/common';
 import {Configuration} from '../../model/configuration';
+import {System} from '../../model/System';
 
 @Component({
   selector: 'app-admin',
@@ -11,7 +12,7 @@ import {Configuration} from '../../model/configuration';
   standalone: true,
   styleUrl: './admin.component.css',
 })
-export class AdminComponent implements OnInit{
+export class AdminComponent implements OnInit {
   configForm: FormGroup; // Reactive Form
   systemRunning = false; // For controlling the "Start System" button
   isConfigLoaded = false; // Enables "Start System" only after loading a configuration
@@ -37,8 +38,8 @@ export class AdminComponent implements OnInit{
       return;
     }
     this.configService.saveConfiguration(this.configForm.value).subscribe((res) => {
-      if (res != null){
-        alert('Configuration saved successfully!');
+      if (res != null) {
+        alert('Configuration saved!');
         this.isConfigLoaded = true;
       }
     });
@@ -50,23 +51,45 @@ export class AdminComponent implements OnInit{
       alert('All fields are required and must be greater than 0.');
       return;
     }
-    this.configService.updateConfiguration(this.configForm.value).subscribe(() => {
-      alert('Configuration updated successfully!');
+
+    this.configService.updateConfiguration(this.configForm.value).subscribe((res: Configuration) => {
+      if (res != null) {
+        alert('Configuration updated!');
+      } else {
+        alert('Configuration update failed!');
+      }
     });
   }
 
   // Load configuration from the server
   loadConfiguration(): void {
-    this.configService.getConfigurations().subscribe((res:Configuration) => {
+    this.configService.getConfigurations().subscribe((res: any) => {
       if (res != null) {
-        localStorage.setItem('configuration', JSON.stringify(res));
         this.configForm.patchValue(res); // Populate the form with the configuration
         this.isConfigLoaded = true;
         alert('Configuration loaded successfully!');
       } else {
-        alert('Failed to load configuration.');
+        alert('Configuration not found!');
       }
     });
+  }
+
+  // Delete configuration from the server
+  deleteConfiguration(): void {
+    if (this.isConfigLoaded) {
+      this.configService.deleteConfiguration().subscribe({
+        next: (response: string) => {
+          if (response.includes("Configuration deleted successfully")) {
+            alert("Configuration deleted successfully")
+          } else {
+            alert('Configuration deleted failed!');
+          }
+        },
+        error: (err) => {
+          alert(err)
+        }
+      });
+    }
   }
 
   // Start the system
@@ -82,7 +105,7 @@ export class AdminComponent implements OnInit{
           }
         },
         error: (err) => {
-          alert('Failed to start the system.' +err);
+          alert('Failed to start the system.' + err);
         }
       });
     } else {
@@ -96,27 +119,35 @@ export class AdminComponent implements OnInit{
       next: (response: string) => {
         if (response.includes('System stopped')) {
           this.systemRunning = false;
-          this.isConfigLoaded = false;
-          this.configForm.reset();
-          localStorage.removeItem('configuration');
           alert('System Stopped!');
-        }else {
+        } else {
           alert('Unexpected response: ' + response);
         }
       },
       error: (err) => {
-        alert("Failed to stop the system." +err);
+        alert("Failed to stop the system." + err);
       }
     });
   }
 
   ngOnInit(): void {
-    const storedConfig = localStorage.getItem('configuration');
-    if (storedConfig) {
-      const config: Configuration = JSON.parse(storedConfig);
-      this.configForm.patchValue(config);
-      this.isConfigLoaded = true;
-    }
+    this.configService.getSystemStatus().subscribe((res: System) => {
+      if (res.running) {
+        this.configService.getConfigurations().subscribe((res: Configuration) => {
+          if (res != null) {
+            this.configForm.patchValue(res); // Populate the form with the configuration
+            this.isConfigLoaded = true;
+            this.configService.getSystemStatus().subscribe((res: System) => {
+              if (res.running) {
+                this.systemRunning = true;
+              }
+            })
+          } else {
+            this.systemRunning = false;
+          }
+        });
+      }
+    })
   }
 
 }

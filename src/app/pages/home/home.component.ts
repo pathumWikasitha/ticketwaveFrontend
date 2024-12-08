@@ -1,13 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { EventService } from '../../service/event.service';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Customer } from '../../model/user';
 
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NgOptimizedImage],
   templateUrl: './home.component.html',
   standalone: true,
   styleUrl: './home.component.css',
