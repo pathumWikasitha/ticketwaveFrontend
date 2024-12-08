@@ -81,6 +81,8 @@ export class AdminComponent implements OnInit {
         next: (response: string) => {
           if (response.includes("Configuration deleted successfully")) {
             alert("Configuration deleted successfully")
+            this.configForm.reset();
+            this.isConfigLoaded = false;
           } else {
             alert('Configuration deleted failed!');
           }

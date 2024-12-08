@@ -5,13 +5,10 @@ import {CustomerService} from '../../service/customer.service';
 import {User} from '../../model/user';
 import {AppComponent} from '../../app.component';
 import {ActivatedRoute} from '@angular/router';
-import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-event',
-  imports: [
-    NgOptimizedImage
-  ],
+  imports: [],
   templateUrl: './event.component.html',
   standalone: true,
   styleUrl: './event.component.css',

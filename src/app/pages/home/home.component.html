@@ -9,12 +9,12 @@
     </div>
     <form class="d-flex" role="search" style="width: 42%">
       <input
-        class="form-control me-2"
+        class="form-control me-2 disabled"
         type="search"
         placeholder="Search Event"
         aria-label="Search"
       />
-      <button class="btn btn-outline-light" type="submit">Search</button>
+      <button class="btn btn-outline-light disabled" type="submit">Search</button>
     </form>
   </div>
 </div>
@@ -26,8 +26,8 @@
   style="margin-left: 13%"
   *ngFor="let event of events"
 >
-  <div class="card" style="width: 18rem">
-    <img ngSrc="{{event.imageUrl}}" class="card-img-top" alt="{{event.eventName}}" fill/>
+  <div class="card" style="width: 18rem;">
+    <img src="{{event.imageUrl}}" class="card-img-top" alt="{{event.eventName}}"/>
     <div class="card-body">
       <h5 class="card-title">{{ event.eventName }}</h5>
       <p class="card-text fw-light mb-1">

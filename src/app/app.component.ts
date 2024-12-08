@@ -1,14 +1,14 @@
-import { Component, inject } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
-import {NgIf, NgOptimizedImage} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {Customer, User} from './model/user';
-import { UserService } from './service/user.service';
+import {UserService} from './service/user.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, NgOptimizedImage, RouterLink, NgIf],
+  imports: [RouterOutlet, FormsModule, RouterLink, NgIf],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -30,22 +30,34 @@ export class AppComponent {
   }
 
   onRegister(registerForm: NgForm) {
-    if (this.registerValidated()){
-      this.userService.createNewUser(this.registerObj).subscribe((res: any) => {
-        if (res == true) {
-          alert('Register successfully!');
-        } else {
-          alert('Register Failed');
-        }
-      });
+    if (this.registerValidated()) {
+      if (this.registerObj.role === 'CUSTOMER') {
+        this.userService.createNewCustomer(this.registerObj).subscribe((res: any) => {
+          if (res == true) {
+            alert('Register successfully!');
+          } else {
+            alert('Register Failed');
+          }
+        });
+      } else if (this.registerObj.role === 'VENDOR') {
+        this.userService.createNewVendor(this.registerObj).subscribe((res: any) => {
+          if (res == true) {
+            alert('Register successfully!');
+          } else {
+            alert('Register Failed');
+          }
+        })
+      }
+
       this.closeRegister();
       registerForm.resetForm();
-    }else {
+    } else {
       alert('Please fill all fields correctly.');
     }
 
   }
-  registerValidated():boolean {
+
+  registerValidated(): boolean {
     return this.registerObj.username.trim().length >= 3 && this.registerObj.password.trim().length >= 8 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.registerObj.email);
   }
 
@@ -63,7 +75,7 @@ export class AppComponent {
           if (this.loggedUser.role === 'ADMIN') {
             this.router.navigate(['/admin']);
           }
-          if (this.loggedUser.role === 'Vendor') {
+          if (this.loggedUser.role === 'VENDOR') {
             this.router.navigate(['/vendor']);
           }
         }
@@ -80,7 +92,8 @@ export class AppComponent {
 
   onLogout() {
     this.loggedUser = new User('');
-    this.router.navigate(['/home']).then(r => localStorage.removeItem('ticketWave'));
+    this.router.navigate(['/home'])
+    localStorage.removeItem('ticketWave');
   }
 
   openRegister() {
@@ -103,11 +116,22 @@ export class AppComponent {
       model.style.display = 'none';
     }
   }
+
   closeLogin() {
     const model = document.getElementById('loginModel');
     if (model != null) {
       model.style.display = 'none';
     }
+  }
+
+  switchToRegister(){
+    this.closeLogin()
+    this.openRegister();
+  }
+
+  switchToLogin(){
+    this.closeRegister();
+    this.openLogin();
   }
 
 }

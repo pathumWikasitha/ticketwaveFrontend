@@ -2,14 +2,14 @@
   <div class="container">
     <a class="navbar-brand" routerLink="/home">
       <img
-        ngSrc="/assets/images/logo.png"
+        src="/assets/images/logo.png"
         alt="logo"
         style="scale: 0.6"
         height="57"
         width="436"
       />
     </a>
-    <div class="collapse navbar-collapse" id="mynavbar">
+    <div class="collapse navbar-collapse" id="myna">
       <div class="ms-auto">
         @if (loggedUser.email == '') {
           <form class="d-flex">
@@ -26,17 +26,25 @@
           </form>
         } @else {
           <div class="flex-shrink-0 dropdown">
-            <a routerLink="/profile" class="d-inline-flex link-body-emphasis text-decoration-none" data-bs-toggle="dropdown"
+            <a routerLink="/profile" class="d-inline-flex link-body-emphasis text-decoration-none"
+               data-bs-toggle="dropdown"
                aria-expanded="false">
               <h4 class="text-dark dropdown-toggle text-capitalize"><i
                 class="bi bi-person-circle me-2 fs-2"> </i>{{ loggedUser.username }}</h4>
             </a>
             <ul class="dropdown-menu text-small shadow" style="">
-              <li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+              <li><a class="dropdown-item" routerLink="/profile"><i class="bi bi-person mx-1"></i>View Profile</a></li>
+              <li *ngIf="loggedUser.role === 'CUSTOMER'"><a class="dropdown-item" routerLink="/bookings"><i
+                class="bi bi-ticket mx-1"></i> Booking History</a></li>
+              <li *ngIf="loggedUser.role === 'ADMIN'"><a class="dropdown-item" routerLink="/admin"><i
+                class="bi bi-gear mx-1"></i>Dashboard</a></li>
+              <li *ngIf="loggedUser.role === 'VENDOR'"><a class="dropdown-item" routerLink="/vendor"><i
+                class="bi bi-gear mx-1"></i>Dashboard</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" (click)="onLogout()">Sign out</a></li>
+              <li><a class="dropdown-item" (click)="onLogout()"><i class="bi bi-box-arrow-right mx-1"></i>Sign out</a>
+              </li>
             </ul>
           </div>
         }
@@ -54,7 +62,6 @@
   class="modal"
   tabindex="-1"
   aria-labelledby="registerModalLabel"
-  aria-hidden="true"
   style="display: none"
 >
   <div class="modal-dialog">
@@ -65,6 +72,7 @@
       </div>
       <div class="modal-body">
         <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" novalidate>
+          <!-- Name Input -->
           <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input
@@ -82,6 +90,8 @@
               Name is required.
             </div>
           </div>
+
+          <!-- Email Input -->
           <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
             <input
@@ -100,6 +110,29 @@
               Valid email is required.
             </div>
           </div>
+          <!-- Role Input -->
+          <div class="mb-3">
+            <label for="role" class="form-label">Register as</label>
+            <select
+              id="role"
+              class="form-select"
+              [(ngModel)]="registerObj.role"
+              name="role"
+              required
+            >
+              <option value="" disabled selected>Select your role</option>
+              <option value="CUSTOMER">Customer</option>
+              <option value="VENDOR">Vendor</option>
+            </select>
+            <div
+              class="text-danger"
+              *ngIf="registerForm.submitted && registerForm.controls['role']?.invalid"
+            >
+              Please select a role.
+            </div>
+          </div>
+
+          <!-- Password Input -->
           <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input
@@ -118,12 +151,23 @@
               Password must be at least 8 characters long.
             </div>
           </div>
+
+          <!-- Sign Up Button -->
           <button type="submit" class="btn btn-primary">Sign Up</button>
         </form>
+
+        <!-- Already Have an Account? -->
+        <div class="mt-3 text-center">
+          <span class="text-muted">
+            Already have an account?
+            <a class="text-primary fw-bold" (click)="switchToLogin()" style="cursor: pointer">Login</a>
+          </span>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- Login Modal -->
 <div
@@ -131,7 +175,6 @@
   class="modal"
   tabindex="-1"
   aria-labelledby="loginModalLabel"
-  aria-hidden="true"
   style="display: none"
 >
   <div class="modal-dialog">
@@ -142,6 +185,7 @@
       </div>
       <div class="modal-body">
         <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" novalidate>
+          <!-- Email -->
           <div class="mb-3">
             <label for="loginEmail" class="form-label">Email address</label>
             <input
@@ -160,6 +204,8 @@
               Valid email is required.
             </div>
           </div>
+
+          <!-- Password -->
           <div class="mb-3">
             <label for="loginPassword" class="form-label">Password</label>
             <input
@@ -177,8 +223,19 @@
               Password is required.
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Login</button>
+
+          <!-- Actions -->
+          <div class="d-flex justify-content-between align-items-center">
+            <button type="submit" class="btn btn-primary">Login</button>
+          </div>
         </form>
+        <!-- Already Have an Account? -->
+        <div class="mt-3 text-center">
+          <span class="text-muted">
+            New to TicketWave?
+            <a class="text-primary fw-bold" (click)="switchToRegister()" style="cursor: pointer">Register</a>
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -186,13 +243,13 @@
 
 
 <!-- Footer -->
-<div class="container-fluid bottom-0 bg-dark position-relative">
+<div class="container-fluid bg-dark">
   <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 mt-4 border-top"
           style="margin-left: 3%; margin-right: 2%">
     <div class="col-md-4 d-block">
-      <a routerLink ="/home"  class="mb-3 me-2 mb-md-0 text-white text-decoration-none lh-1">
+      <a routerLink="/home" class="mb-3 me-2 mb-md-0 text-white text-decoration-none lh-1">
         <img
-          ngSrc="/assets/images/logo-white.png"
+          src="/assets/images/logo-white.png"
           alt="logo"
           style="scale: 0.6"
           height="47"
@@ -201,7 +258,7 @@
       </a>
     </div>
 
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex fs-4">
+    <ul class="nav col-md-4 justify-content-end list-styled d-flex fs-4">
       <li class="ms-3"><a class="text-white" href="#"><i class="bi bi-twitter-x"></i></a></li>
       <li class="ms-3"><a class="text-white" href="#"><i class="bi bi-instagram"></i></a></li>
       <li class="ms-3"><a class="text-white" href="#"><i class="bi bi-facebook"></i></a></li>

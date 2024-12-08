@@ -1,18 +1,18 @@
 <div
-  class="container-fluid bg-dark mt-2 position-relative w-100"
-  style="height: 18rem"
+  class="container-fluid bg-dark mt-2 position-relative"
+  style="height: 18rem;"
 >
   <!-- Event Image -->
   <div
     class="position-absolute z-1"
-    style="width: 25%; height: 130%; right: 10%; top: 50%"
+    style="width: 25%; height: 130%; right: 10%; top: 50%; scale: 1.1;"
   >
     <img
-      ngSrc="{{event.imageUrl}}"
+      src="{{event.imageUrl}}"
       class="img-fluid rounded-3"
       alt="{{event.eventName}}"
       style="max-height: 100%; object-fit: cover"
-      fill/>
+      />
     <div
       class="d-flex align-items-center justify-content-center mt-3"
       style="height: 20%"
@@ -57,7 +57,7 @@
 </div>
 
 <!-- More Info Section -->
-<div class="container mt-4" style="max-width: 80%">
+<div class="container mt-4" style="max-width: 80%; min-height: 43vh">
   <h4>More info</h4>
   <h6 class="text-black-50">{{ event.eventDescription }}</h6>
   <h4 class="mt-4">{{ event.eventName }}</h4>
