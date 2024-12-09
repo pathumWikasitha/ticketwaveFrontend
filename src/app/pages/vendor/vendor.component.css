@@ -25,3 +25,8 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+.card:hover {
+  transform: scale(1.02);
+  transition: 0.3s ease-in-out;
+}

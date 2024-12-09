@@ -1,26 +1,39 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
-import {NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {Event} from '../../model/event';
 import {VendorService} from '../../service/vendor.service';
+import {EventService} from '../../service/event.service';
+import {Vendor} from '../../model/user';
+import {Configuration} from '../../model/configuration';
+import {TicketService} from '../../service/ticket.service';
+import {Ticket} from '../../model/Ticket';
+
 
 @Component({
   selector: 'app-vendor',
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './vendor.component.html',
   standalone: true,
   styleUrl: './vendor.component.css'
 })
-export class VendorComponent {
+export class VendorComponent implements OnInit {
   vendorService = inject(VendorService);
   eventObj: Event = new Event();
   eventForm!: NgForm;
+  eventService = inject(EventService);
+  ticketService = inject(TicketService);
+  events!: Event[];
+  vendor!: Vendor;
 
 
   isModalOpen: boolean = false;
+  ticketCount!: number[];
+  tickets: Ticket[] = [];
 
   onOpenAddEvent(): void {
     this.isModalOpen = true;
@@ -71,6 +84,66 @@ export class VendorComponent {
 
     // Combine date and time into the final format
     return `${formattedDate} • ${formattedTime} IST`;
+  }
+
+
+  getEvents() {
+    this.eventService.getEvents().subscribe((res: any) => {
+      this.events = res;
+      this.ticketCount = this.events.map(() => 1);
+    });
+  }
+
+  increaseCount(eventId: number): void {
+    this.ticketCount[eventId]++;
+  }
+
+  decreaseCount(eventId: number): void {
+    if (this.ticketCount[eventId] > 1) {
+      this.ticketCount[eventId]--;
+    }
+  }
+
+  onReleaseTickets(eventId: number): void {
+    debugger;
+    this.vendorService.releaseTickets(this.vendor.id, this.ticketCount[eventId], this.events[eventId]).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          alert(this.ticketCount[eventId] + ' ticket released successfully.');
+        } else {
+          alert('ticket release failed');
+        }
+      }, error(err) {
+        alert('System not running to release tickets.');
+      }
+    });
+  }
+
+
+  // // Method to continuously poll for new tickets
+  // getTicketDetails(): void {
+  //   this.ticketService.getNewTicketDetails().subscribe(
+  //     (ticket: Ticket) => {
+  //       // Add the new ticket to the table
+  //       this.tickets.push(ticket);
+  //       // Continue long-polling
+  //       this.getTicketDetails();
+  //     },
+  //     (error) => {
+  //       console.error('Polling error:', error);
+  //       setTimeout(() => this.getTicketDetails(), 5000);  // Retry after a short delay
+  //     }
+  //   );
+  // }
+
+
+  ngOnInit(): void {
+    const localObj = localStorage.getItem('ticketWave');
+    if (localObj != null) {
+      this.vendor = JSON.parse(localObj);
+      this.getEvents();
+      // this.getTicketDetails()
+    }
   }
 
 

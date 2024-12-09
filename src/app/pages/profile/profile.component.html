@@ -1,7 +1,10 @@
 <div class="container mt-2" style="min-height: 79vh">
-  <div class="text-center">
-
-    <h2 class="fs-3 fw-bold mb-4"><i class="bi bi-person-circle mx-2"></i>User Profile</h2>
+  <!-- Hero Section -->
+  <div class="container-fluid bg-dark text-white text-center py-5 mb-4 rounded">
+    <h1 class="fw-bold">Manage Your Profile</h1>
+    <p class="mt-3">
+      Update your information to keep your account secure and personalized.
+    </p>
   </div>
 
   <form #profileForm="ngForm" (ngSubmit)="onSubmit(profileForm)" novalidate>
@@ -57,6 +60,21 @@
     </div>
     <!-- Submit Button -->
     <button type="submit" class="btn btn-primary mt-4" [disabled]="!profileForm.dirty">Update</button>
-
   </form>
+
+  <!-- Additional Section -->
+  <div class="container mt-4 bg-light p-4 rounded">
+    <h4 class="fw-bold mb-3">Profile Information</h4>
+    <div class="row">
+      <div class="col-md-6">
+        <p><strong>UserID:</strong> {{ user.id }}</p>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Password:</strong> ****</p>
+
+      </div>
+    </div>
+  </div>
 </div>

@@ -97,39 +97,45 @@ export class AdminComponent implements OnInit {
   // Start the system
   startSystem(): void {
     if (this.isConfigLoaded) {
-      this.configService.startSystem().subscribe({
-        next: (response: string) => {
-          if (response.includes('System started')) {
-            this.systemRunning = true;
-            alert('System Started!');
-          } else {
-            alert('Unexpected response: ' + response);
+      const confirmed = confirm('Do you want to start system?');
+      if (confirmed) {
+        this.configService.startSystem().subscribe({
+          next: (response: string) => {
+            if (response.includes('System started')) {
+
+              this.systemRunning = true;
+              alert('System Started!');
+
+            } else {
+              alert('Unexpected response: ' + response);
+            }
+          },
+          error: (err) => {
+            alert('Failed to start the system.' + err);
           }
-        },
-        error: (err) => {
-          alert('Failed to start the system.' + err);
-        }
-      });
-    } else {
-      alert('Please load or save a configuration first.');
+        });
+      }
     }
   }
 
   // Stop the system
   stopSystem(): void {
-    this.configService.stopSystem().subscribe({
-      next: (response: string) => {
-        if (response.includes('System stopped')) {
-          this.systemRunning = false;
-          alert('System Stopped!');
-        } else {
-          alert('Unexpected response: ' + response);
+    const confirmed = confirm('Do you want to stop system?');
+    if (confirmed) {
+      this.configService.stopSystem().subscribe({
+        next: (response: string) => {
+          if (response.includes('System stopped')) {
+            this.systemRunning = false;
+            alert('System Stopped!');
+          } else {
+            alert('Unexpected response: ' + response);
+          }
+        },
+        error: (err) => {
+          alert("Failed to stop the system." + err);
         }
-      },
-      error: (err) => {
-        alert("Failed to stop the system." + err);
-      }
-    });
+      });
+    }
   }
 
   ngOnInit(): void {
