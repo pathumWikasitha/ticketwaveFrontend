@@ -66,12 +66,12 @@
 >
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="registerModalLabel">Sign Up</h5>
-        <button type="button" class="btn-close" (click)="closeRegister()"></button>
-      </div>
       <div class="modal-body">
         <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" novalidate>
+          <div class="modal-header">
+            <h5 class="modal-title" id="registerModalLabel">Sign Up</h5>
+            <button type="reset" class="btn-close" (click)="closeRegister()"></button>
+          </div>
           <!-- Name Input -->
           <div class="mb-3">
             <label for="name" class="form-label">Name</label>
@@ -121,7 +121,7 @@
               required
             >
               <option value="" disabled selected>Select your role</option>
-              <option value="CUSTOMER">Customer</option>
+              <option selected value="CUSTOMER">Customer</option>
               <option value="VENDOR">Vendor</option>
             </select>
             <div
@@ -179,12 +179,12 @@
 >
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Login</h5>
-        <button type="button" class="btn-close" (click)="closeLogin()"></button>
-      </div>
       <div class="modal-body">
         <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" novalidate>
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Login</h5>
+            <button type="reset" class="btn-close" (click)="closeLogin()"></button>
+          </div>
           <!-- Email -->
           <div class="mb-3">
             <label for="loginEmail" class="form-label">Email address</label>

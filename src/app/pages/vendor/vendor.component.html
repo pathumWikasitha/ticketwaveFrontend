@@ -1,1 +1,128 @@
-<p>vendor works!</p>
+<div class="container mt-4 h-auto">
+  <h2 class="text-center my-4 fw-bold">Vendor Dashboard</h2>
+
+  <button class="btn btn-primary" (click)="onOpenAddEvent()">Create Event</button>
+
+  <!-- Modal -->
+  <div id="eventModal" class="modal" tabindex="-1" [hidden]="!isModalOpen">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <!-- Form -->
+          <form #eventForm="ngForm" (ngSubmit)="onAddEvent(eventForm)" novalidate>
+            <div class="modal-header mb-3">
+              <h5 class="modal-title">Create Event</h5>
+              <button type="reset" class="btn-close" (click)="closeEventModal()"></button>
+            </div>
+            <!-- Event Name -->
+            <div class="mb-3">
+              <label for="eventName" class="form-label">Event Name</label>
+              <input
+                type="text"
+                id="eventName"
+                class="form-control"
+                [(ngModel)]="eventObj.eventName"
+                name="eventName"
+                #eventName="ngModel"
+                required
+              />
+              <div class="text-danger" *ngIf="eventName.invalid && eventName.touched">
+                Event Name is required.
+              </div>
+            </div>
+
+            <!-- Ticket Price -->
+            <div class="mb-3">
+              <label for="ticketPrice" class="form-label">Ticket Price</label>
+              <input
+                type="number"
+                id="ticketPrice"
+                class="form-control"
+                [(ngModel)]="eventObj.ticketPrice"
+                name="ticketPrice"
+                #ticketPrice="ngModel"
+                required
+                min="0"
+              />
+              <div class="text-danger" *ngIf="ticketPrice.invalid && ticketPrice.touched">
+                Ticket Price is required and must be a positive number.
+              </div>
+            </div>
+
+            <!-- Event Description -->
+            <div class="mb-3">
+              <label for="eventDescription" class="form-label">Event Description</label>
+              <textarea
+                id="eventDescription"
+                class="form-control"
+                [(ngModel)]="eventObj.eventDescription"
+                name="eventDescription"
+                #eventDescription="ngModel"
+                required
+              ></textarea>
+              <div class="text-danger" *ngIf="eventDescription.invalid && eventDescription.touched">
+                Event Description is required.
+              </div>
+            </div>
+
+            <!-- Event Location -->
+            <div class="mb-3">
+              <label for="eventLocation" class="form-label">Event Location</label>
+              <input
+                type="text"
+                id="eventLocation"
+                class="form-control"
+                [(ngModel)]="eventObj.eventLocation"
+                name="eventLocation"
+                #eventLocation="ngModel"
+                required
+              />
+              <div class="text-danger" *ngIf="eventLocation.invalid && eventLocation.touched">
+                Event Location is required.
+              </div>
+            </div>
+
+            <!-- Event Date and Time -->
+            <div class="mb-3">
+              <label for="eventDateTime" class="form-label">Event Date & Time</label>
+              <input
+                type="datetime-local"
+                id="eventDateTime"
+                class="form-control"
+                [(ngModel)]="eventObj.eventDateTime"
+                name="eventDateTime"
+                #eventDateTime="ngModel"
+                required
+              />
+              <div class="text-danger" *ngIf="eventDateTime.invalid && eventDateTime.touched">
+                Event Date and Time is required.
+              </div>
+            </div>
+
+            <!-- Image URL -->
+            <div class="mb-3">
+              <label for="imageUrl" class="form-label">Image URL</label>
+              <input
+                type="url"
+                id="imageUrl"
+                class="form-control"
+                [(ngModel)]="eventObj.imageUrl"
+                name="imageUrl"
+                #imageUrl="ngModel"
+                required
+              />
+              <div class="text-danger" *ngIf="imageUrl.invalid && imageUrl.touched">
+                A valid Image URL is required.
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">
+              Create Event
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
