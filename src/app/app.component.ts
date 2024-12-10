@@ -66,7 +66,6 @@ export class AppComponent {
     this.userService.loginUser(this.loginObj).subscribe({
       next: (response) => {
         if (response.status === 200) {
-          debugger;
           localStorage.setItem('ticketWave', JSON.stringify(response.body));
           this.loggedUser = response.body;
           this.closeLogin();
@@ -124,12 +123,12 @@ export class AppComponent {
     }
   }
 
-  switchToRegister(){
+  switchToRegister() {
     this.closeLogin()
     this.openRegister();
   }
 
-  switchToLogin(){
+  switchToLogin() {
     this.closeRegister();
     this.openLogin();
   }

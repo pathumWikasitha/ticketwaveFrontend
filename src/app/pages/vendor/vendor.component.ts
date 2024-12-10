@@ -8,6 +8,7 @@ import {Vendor} from '../../model/user';
 import {Ticket} from '../../model/Ticket';
 import {TicketService} from '../../service/ticket.service';
 import {HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -24,6 +25,7 @@ import {HttpResponse} from '@angular/common/http';
 export class VendorComponent implements OnInit {
   vendorService = inject(VendorService);
   ticketService = inject(TicketService);
+  router = inject(Router);
   eventObj: Event = new Event();
   eventForm!: NgForm;
   eventService = inject(EventService);
@@ -61,6 +63,7 @@ export class VendorComponent implements OnInit {
       this.vendorService.createEvent(this.eventObj).subscribe((res: any) => {
         if (res != null) {
           alert('Event Created Successfully');
+          this.router.navigate(['/vendor']);
         } else {
           alert('Event create failed');
         }
@@ -117,11 +120,12 @@ export class VendorComponent implements OnInit {
       next: (response: HttpResponse<any>) => {
         if (response.status === 200) {
           alert(this.ticketCount[eventId] + ' ticket released successfully.');
+          this.router.navigate(['/vendor']);
         } else {
           alert('ticket release failed');
         }
-      }, error(err) {
-        alert('System not running to release tickets.' + err);
+      }, error() {
+        alert('System not running to release tickets.');
       }
     });
   }
@@ -132,7 +136,7 @@ export class VendorComponent implements OnInit {
     const poll = (): void => {
       if (!this.isPolling) return; // Exit if polling is disabled
 
-      this.ticketService.getPurchasedTickets().subscribe({
+      this.ticketService.getPurchasedTickets(this.vendor.id).subscribe({
         next: (res: Ticket[]) => {
           this.tickets = res; // Update the ticket list
           setTimeout(poll, 5000); // Continue polling after 5 seconds

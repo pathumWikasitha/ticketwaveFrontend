@@ -32,7 +32,6 @@ export class AdminComponent implements OnInit {
 
   // Save configuration
   saveConfiguration(): void {
-    debugger;
     if (this.configForm.invalid) {
       alert('All fields are required and must be greater than 0.');
       return;

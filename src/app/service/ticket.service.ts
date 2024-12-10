@@ -13,7 +13,7 @@ export class TicketService {
   constructor(private http: HttpClient) {
   }
 
-  getPurchasedTickets(): Observable<Ticket[]> {
-    return this.http.get<Ticket[]>(this.apiUrl + 'all');
+  getPurchasedTickets(vendorId:number): Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(this.apiUrl + `all/${vendorId}`);
   }
 }

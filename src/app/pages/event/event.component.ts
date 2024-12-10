@@ -24,7 +24,6 @@ export class EventComponent implements OnInit {
   eventId!: number;  // Declare eventId
 
   ngOnInit(): void {
-    debugger;
     this.eventId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.showEvent();
   }
@@ -52,10 +51,10 @@ export class EventComponent implements OnInit {
     if (localData != null) {
       const user: User = JSON.parse(localData);
       if (user?.role === 'CUSTOMER' && user?.id) {
-        this.customerService.purchaseTicket(user.id, this.ticketCount).subscribe({
+        this.customerService.purchaseTicket(user.id, this.ticketCount,this.event).subscribe({
           next: (response) => {
             // Access the HTTP status code
-            if (response.status === 202) {
+            if (response.status === 200) {
               alert('Tickets purchased successfully!');
             } else {
               alert(`Request processed, but status code: ${response.status}`);

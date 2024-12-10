@@ -27,11 +27,11 @@ export class BookingsComponent implements OnInit {
     if (this.loginObj != null) {
       this.customer = JSON.parse(this.loginObj);
       this.customerService.customerBookings(this.customer.id).subscribe({
-        next: (response) => {
+        next: (response: Ticket[] | null) => {
           if (response != null) {
             this.tickets = response;
           }
-        }, error(err) {
+        }, error(err: any) {
           console.log(err);
         }
       });
