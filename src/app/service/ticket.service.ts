@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Ticket} from '../model/Ticket';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class TicketService {
   constructor(private http: HttpClient) {
   }
 
-  getNewTicketDetails(): Observable<Ticket> {
-    return this.http.get<Ticket>(this.apiUrl + 'all');
+  getPurchasedTickets(): Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(this.apiUrl + 'all');
   }
 }

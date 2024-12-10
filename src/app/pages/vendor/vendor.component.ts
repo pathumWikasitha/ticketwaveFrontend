@@ -5,9 +5,9 @@ import {Event} from '../../model/event';
 import {VendorService} from '../../service/vendor.service';
 import {EventService} from '../../service/event.service';
 import {Vendor} from '../../model/user';
-import {Configuration} from '../../model/configuration';
-import {TicketService} from '../../service/ticket.service';
 import {Ticket} from '../../model/Ticket';
+import {TicketService} from '../../service/ticket.service';
+import {HttpResponse} from '@angular/common/http';
 
 
 @Component({
@@ -23,10 +23,10 @@ import {Ticket} from '../../model/Ticket';
 })
 export class VendorComponent implements OnInit {
   vendorService = inject(VendorService);
+  ticketService = inject(TicketService);
   eventObj: Event = new Event();
   eventForm!: NgForm;
   eventService = inject(EventService);
-  ticketService = inject(TicketService);
   events!: Event[];
   vendor!: Vendor;
 
@@ -34,9 +34,17 @@ export class VendorComponent implements OnInit {
   isModalOpen: boolean = false;
   ticketCount!: number[];
   tickets: Ticket[] = [];
+  isPolling: boolean = true;
+  isEventsActive: boolean = true;
+  isPurchasedListActive: boolean = false;
 
   onOpenAddEvent(): void {
     this.isModalOpen = true;
+  }
+
+  onShowEvents(): void {
+    this.isEventsActive = true;
+    this.isPurchasedListActive = false;
   }
 
   closeEventModal(): void {
@@ -105,36 +113,39 @@ export class VendorComponent implements OnInit {
   }
 
   onReleaseTickets(eventId: number): void {
-    debugger;
     this.vendorService.releaseTickets(this.vendor.id, this.ticketCount[eventId], this.events[eventId]).subscribe({
-      next: (response) => {
+      next: (response: HttpResponse<any>) => {
         if (response.status === 200) {
           alert(this.ticketCount[eventId] + ' ticket released successfully.');
         } else {
           alert('ticket release failed');
         }
       }, error(err) {
-        alert('System not running to release tickets.');
+        alert('System not running to release tickets.' + err);
       }
     });
   }
 
+  onShowPurchasedTickets() {
+    this.isPurchasedListActive = true;
+    this.isEventsActive = false;
+    const poll = (): void => {
+      if (!this.isPolling) return; // Exit if polling is disabled
 
-  // // Method to continuously poll for new tickets
-  // getTicketDetails(): void {
-  //   this.ticketService.getNewTicketDetails().subscribe(
-  //     (ticket: Ticket) => {
-  //       // Add the new ticket to the table
-  //       this.tickets.push(ticket);
-  //       // Continue long-polling
-  //       this.getTicketDetails();
-  //     },
-  //     (error) => {
-  //       console.error('Polling error:', error);
-  //       setTimeout(() => this.getTicketDetails(), 5000);  // Retry after a short delay
-  //     }
-  //   );
-  // }
+      this.ticketService.getPurchasedTickets().subscribe({
+        next: (res: Ticket[]) => {
+          this.tickets = res; // Update the ticket list
+          setTimeout(poll, 5000); // Continue polling after 5 seconds
+        },
+        error: (err: any) => {
+          console.error('Error fetching tickets:', err);
+          setTimeout(poll, 5000); // Retry after 5 seconds on error
+        }
+      });
+    };
+
+    poll(); // Invoke the polling function
+  }
 
 
   ngOnInit(): void {
@@ -142,9 +153,7 @@ export class VendorComponent implements OnInit {
     if (localObj != null) {
       this.vendor = JSON.parse(localObj);
       this.getEvents();
-      // this.getTicketDetails()
     }
+
   }
-
-
 }
