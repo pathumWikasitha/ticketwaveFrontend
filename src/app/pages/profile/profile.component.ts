@@ -2,7 +2,6 @@ import {Component, inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Admin, Customer, User, Vendor} from '../../model/user';
 import {NgIf} from '@angular/common';
-import {Router} from '@angular/router';
 import {UserService} from '../../service/user.service';
 
 @Component({

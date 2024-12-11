@@ -32,7 +32,7 @@
     <h2 class="fw-bold text-center mb-4">Your Events</h2>
     <div class="row gy-4">
       <!-- Event Card -->
-      <div class="col-md-4" *ngFor="let event of events">
+      <div class="col-md-4" *ngFor="let event of events; let i = index">
         <div class="card h-100 shadow-sm">
           <img
             src="{{ event.imageUrl }}"
@@ -57,14 +57,14 @@
             <div class="d-flex align-items-center">
               <button
                 class="btn btn-outline-primary btn-sm"
-                (click)="decreaseCount(event.eventId)"
+                (click)="decreaseCount(i)"
               >
                 <i class="bi bi-dash"></i>
               </button>
-              <span class="px-3 fs-6">{{ ticketCount[event.eventId] }}</span>
+              <span class="px-3 fs-6">{{ ticketCounts[i] }}</span>
               <button
                 class="btn btn-outline-primary btn-sm"
-                (click)="increaseCount(event.eventId)"
+                (click)="increaseCount(i)"
               >
                 <i class="bi bi-plus"></i>
               </button>

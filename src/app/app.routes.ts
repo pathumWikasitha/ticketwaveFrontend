@@ -5,6 +5,7 @@ import { EventComponent } from './pages/event/event.component';
 import {VendorComponent} from './pages/vendor/vendor.component';
 import {ProfileComponent} from './pages/profile/profile.component';
 import {BookingsComponent} from './pages/bookings/bookings.component';
+import {authGuard} from './gard/auth.guard';
 
 export const routes: Routes = [
   {
@@ -19,22 +20,27 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate:[authGuard]
   },
   {
     path: 'event/:id',
     component: EventComponent,
+    canActivate:[authGuard]
   },
   {
     path: 'vendor',
-    component: VendorComponent
+    component: VendorComponent,
+    canActivate:[authGuard]
   },
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate:[authGuard]
   },
   {
     path: 'bookings',
     component: BookingsComponent,
+    canActivate:[authGuard]
 
   }
 ];

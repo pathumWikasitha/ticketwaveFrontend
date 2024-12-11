@@ -34,7 +34,7 @@ export class VendorComponent implements OnInit {
 
 
   isModalOpen: boolean = false;
-  ticketCount!: number[];
+  ticketCounts: number[] = []; // Array to hold counts for all events
   tickets: Ticket[] = [];
   isPolling: boolean = true;
   isEventsActive: boolean = true;
@@ -98,35 +98,36 @@ export class VendorComponent implements OnInit {
   }
 
 
-  getEvents() {
+  getEvents(): void {
     this.eventService.getEvents().subscribe((res: any) => {
       this.events = res;
-      this.ticketCount = this.events.map(() => 1);
+      this.ticketCounts = this.events.map(() => 1); // Initialize counts for all events
     });
   }
 
-  increaseCount(eventId: number): void {
-    this.ticketCount[eventId]++;
+  increaseCount(index: number): void {
+    this.ticketCounts[index]++;
   }
 
-  decreaseCount(eventId: number): void {
-    if (this.ticketCount[eventId] > 1) {
-      this.ticketCount[eventId]--;
+  decreaseCount(index: number): void {
+    if (this.ticketCounts[index] > 1) {
+      this.ticketCounts[index]--;
     }
   }
 
-  onReleaseTickets(eventId: number): void {
-    this.vendorService.releaseTickets(this.vendor.id, this.ticketCount[eventId], this.events[eventId]).subscribe({
+  onReleaseTickets(index: number): void {
+    this.vendorService.releaseTickets(this.vendor.id, this.ticketCounts[index], this.events[index]).subscribe({
       next: (response: HttpResponse<any>) => {
         if (response.status === 200) {
-          alert(this.ticketCount[eventId] + ' ticket released successfully.');
+          alert(`${this.ticketCounts[index]} ticket(s) released successfully.`);
           this.router.navigate(['/vendor']);
         } else {
-          alert('ticket release failed');
+          alert('Ticket release failed.');
         }
-      }, error() {
+      },
+      error: () => {
         alert('System not running to release tickets.');
-      }
+      },
     });
   }
 
