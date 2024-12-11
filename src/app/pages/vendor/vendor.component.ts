@@ -63,7 +63,7 @@ export class VendorComponent implements OnInit {
       this.vendorService.createEvent(this.eventObj).subscribe((res: any) => {
         if (res != null) {
           alert('Event Created Successfully');
-          this.router.navigate(['/vendor']);
+          window.location.reload();
         } else {
           alert('Event create failed');
         }

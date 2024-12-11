@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {Admin, Customer, User, Vendor} from '../../model/user';
 import {NgIf} from '@angular/common';
 import {UserService} from '../../service/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +17,7 @@ import {UserService} from '../../service/user.service';
 })
 export class ProfileComponent implements OnInit {
   userService = inject(UserService);
+  router = inject(Router);
   user: User = new User('');
 
   onSubmit(form: any) {
@@ -26,6 +28,7 @@ export class ProfileComponent implements OnInit {
             alert('Profile Updated successfully.');
             localStorage.removeItem('ticketWave')
             localStorage.setItem('ticketWave', JSON.stringify(result));
+            window.location.reload();
           } else {
             alert('Profile update failed.');
           }
@@ -35,6 +38,9 @@ export class ProfileComponent implements OnInit {
         this.userService.updateVendor(this.user).subscribe((result: Vendor) => {
           if (result != null) {
             alert('Profile Updated successfully.');
+            localStorage.removeItem('ticketWave')
+            localStorage.setItem('ticketWave', JSON.stringify(result));
+            window.location.reload();
           } else {
             alert('Profile update failed.');
           }
@@ -44,6 +50,9 @@ export class ProfileComponent implements OnInit {
         this.userService.updateCustomer(this.user).subscribe((result: Customer) => {
           if (result != null) {
             alert('Profile Updated successfully.');
+            localStorage.removeItem('ticketWave')
+            localStorage.setItem('ticketWave', JSON.stringify(result));
+            window.location.reload();
           } else {
             alert('Profile update failed.');
           }
